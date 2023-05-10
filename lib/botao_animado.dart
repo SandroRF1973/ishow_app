@@ -2,36 +2,51 @@ import 'package:flutter/material.dart';
 
 class BotaoAnimado extends StatelessWidget {
   final AnimationController? controller;
+  final Animation<double> largura;
+  final Animation<double> altura;
+  final Animation<double> opacidade;
+  final Animation<double> radius;
 
-  const BotaoAnimado({@required this.controller, super.key});
+  BotaoAnimado({@required this.controller, super.key})
+      : largura = Tween<double>(begin: 0, end: 500).animate(CurvedAnimation(
+            parent: controller!, curve: const Interval(0.5, 1))),
+        altura = Tween<double>(begin: 0, end: 50).animate(CurvedAnimation(
+            parent: controller, curve: const Interval(0.5, 0.7))),
+        radius = Tween<double>(begin: 0, end: 20).animate(
+            CurvedAnimation(parent: controller, curve: const Interval(0.6, 1))),
+        opacidade = Tween<double>(begin: 0, end: 1).animate(CurvedAnimation(
+            parent: controller!, curve: const Interval(0.6, 0.8)));
+
+  Widget _buildAnimation(BuildContext context, Widget? widget) {
+    return InkWell(
+      onTap: () {},
+      child: Container(
+        height: altura.value,
+        width: largura.value,
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(radius.value),
+            gradient: const LinearGradient(colors: [
+              Color.fromRGBO(255, 100, 127, 1),
+              Color.fromRGBO(255, 123, 145, 1)
+            ])),
+        child: Center(
+          child: FadeTransition(
+            opacity: opacidade,
+            child: const Text(
+              "Entrar",
+              style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedBuilder(
-        animation: _animacaoSize!,
-        builder: (context, widget) {
-          return InkWell(
-            onTap: () {},
-            child: Container(
-              height: 50,
-              width: _animacaoSize!.value,
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  gradient: const LinearGradient(colors: [
-                    Color.fromRGBO(255, 100, 127, 1),
-                    Color.fromRGBO(255, 123, 145, 1)
-                  ])),
-              child: const Center(
-                child: Text(
-                  "Entrar",
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold),
-                ),
-              ),
-            ),
-          );
-        });
+    return AnimatedBuilder(animation: controller!, builder: _buildAnimation);
   }
 }

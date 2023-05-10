@@ -45,7 +45,7 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    //timeDilation = 8;
+    timeDilation = 10;
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -98,7 +98,7 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                           padding: const EdgeInsets.all(8),
                           decoration: BoxDecoration(
                               color: Colors.white,
-                              borderRadius: BorderRadius.circular(8),
+                              borderRadius: BorderRadius.circular(20),
                               boxShadow: [
                                 BoxShadow(
                                     color: Colors.grey[300]!,
@@ -124,7 +124,9 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                   const SizedBox(
                     height: 20,
                   ),
-                  const BotaoAnimado(),
+                  BotaoAnimado(
+                    controller: _controller,
+                  ),
                   const SizedBox(
                     height: 10,
                   ),
