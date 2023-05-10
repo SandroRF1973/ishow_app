@@ -10,6 +10,7 @@ class InputCustomizado extends StatelessWidget {
   final String? hint;
   final bool? obscure;
   final Icon? icon;
+  //print
 
   @override
   Widget build(BuildContext context) {
