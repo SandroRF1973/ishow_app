@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:ishow_app/botao_animado.dart';
 import 'package:ishow_app/input_customizado.dart';
 import 'package:flutter/scheduler.dart' show timeDilation;
 
@@ -21,8 +22,8 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
   void initState() {
     super.initState();
 
-    _controller = AnimationController(
-        duration: const Duration(milliseconds: 500), vsync: this);
+    _controller =
+        AnimationController(duration: const Duration(seconds: 1), vsync: this);
 
     _animacaoBlur = Tween<double>(begin: 5, end: 0)
         .animate(CurvedAnimation(parent: _controller!, curve: Curves.ease));
@@ -34,6 +35,12 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
         CurvedAnimation(parent: _controller!, curve: Curves.decelerate));
 
     _controller!.forward();
+  }
+
+  @override
+  void dispose() {
+    _controller?.dispose();
+    super.dispose();
   }
 
   @override
@@ -117,32 +124,7 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                   const SizedBox(
                     height: 20,
                   ),
-                  AnimatedBuilder(
-                      animation: _animacaoSize!,
-                      builder: (context, widget) {
-                        return InkWell(
-                          onTap: () {},
-                          child: Container(
-                            height: 50,
-                            width: _animacaoSize!.value,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                gradient: const LinearGradient(colors: [
-                                  Color.fromRGBO(255, 100, 127, 1),
-                                  Color.fromRGBO(255, 123, 145, 1)
-                                ])),
-                            child: const Center(
-                              child: Text(
-                                "Entrar",
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                            ),
-                          ),
-                        );
-                      }),
+                  const BotaoAnimado(),
                   const SizedBox(
                     height: 10,
                   ),
