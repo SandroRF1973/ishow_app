@@ -15,7 +15,7 @@ class BotaoAnimado extends StatelessWidget {
         radius = Tween<double>(begin: 0, end: 20).animate(
             CurvedAnimation(parent: controller, curve: const Interval(0.6, 1))),
         opacidade = Tween<double>(begin: 0, end: 1).animate(CurvedAnimation(
-            parent: controller!, curve: const Interval(0.6, 0.8)));
+            parent: controller, curve: const Interval(0.6, 0.8)));
 
   Widget _buildAnimation(BuildContext context, Widget? widget) {
     return InkWell(
