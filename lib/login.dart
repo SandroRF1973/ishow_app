@@ -92,9 +92,9 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                           decoration: BoxDecoration(
                               color: Colors.white,
                               borderRadius: BorderRadius.circular(8),
-                              boxShadow: const [
+                              boxShadow: [
                                 BoxShadow(
-                                    color: Colors.grey,
+                                    color: Colors.grey[300]!,
                                     blurRadius: 15,
                                     spreadRadius: 4)
                               ]),
