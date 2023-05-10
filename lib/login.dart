@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:ishow_app/input_customizado.dart';
 
@@ -8,7 +10,31 @@ class Login extends StatefulWidget {
   State<Login> createState() => _LoginState();
 }
 
-class _LoginState extends State<Login> {
+class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
+  AnimationController? _controller;
+  Animation<double>? _animacaoBlur;
+  Animation<double>? _animacaoFade;
+  Animation<double>? _animacaoSize;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _controller = AnimationController(
+        duration: const Duration(milliseconds: 500), vsync: this);
+
+    _animacaoBlur = Tween<double>(begin: 5, end: 0)
+        .animate(CurvedAnimation(parent: _controller!, curve: Curves.ease));
+
+    _animacaoFade = Tween<double>(begin: 0, end: 1).animate(
+        CurvedAnimation(parent: _controller!, curve: Curves.easeInOutQuint));
+
+    _animacaoSize = Tween<double>(begin: 0, end: 500).animate(
+        CurvedAnimation(parent: _controller!, curve: Curves.decelerate));
+
+    _controller!.forward();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -16,22 +42,39 @@ class _LoginState extends State<Login> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Container(
-              height: 400,
-              decoration: const BoxDecoration(
-                image: DecorationImage(
-                    image: AssetImage("imagens/fundo.png"), fit: BoxFit.fill),
-              ),
-              child: Stack(
-                children: [
-                  Positioned(
-                    left: 10,
-                    child: Image.asset("imagens/detalhe1.png"),
+            AnimatedBuilder(
+              animation: _animacaoBlur!,
+              builder: (context, widget) {
+                return Container(
+                  height: 400,
+                  decoration: const BoxDecoration(
+                    image: DecorationImage(
+                        image: AssetImage("imagens/fundo.png"),
+                        fit: BoxFit.fill),
                   ),
-                  Positioned(
-                      left: 50, child: Image.asset("imagens/detalhe2.png"))
-                ],
-              ),
+                  child: BackdropFilter(
+                    filter: ImageFilter.blur(
+                        sigmaX: _animacaoBlur!.value,
+                        sigmaY: _animacaoBlur!.value),
+                    child: Stack(children: [
+                      Positioned(
+                        left: 10,
+                        child: FadeTransition(
+                          opacity: _animacaoFade!,
+                          child: Image.asset("imagens/detalhe1.png"),
+                        ),
+                      ),
+                      Positioned(
+                        left: 50,
+                        child: FadeTransition(
+                          opacity: _animacaoFade!,
+                          child: Image.asset("imagens/detalhe2.png"),
+                        ),
+                      )
+                    ]),
+                  ),
+                );
+              },
             ),
             Padding(
               padding: const EdgeInsets.only(left: 30, right: 30),
